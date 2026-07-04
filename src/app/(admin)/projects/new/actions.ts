@@ -2,6 +2,7 @@
 
 import { supabase } from '@/lib/supabase';
 import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
 const CHECKLIST_TEMPLATE = {
   Requirements: ["Logo Received", "Content Received", "Images Received", "Business Information Received"],
@@ -62,5 +63,8 @@ export async function createProject(prevState: any, formData: FormData) {
     // Even if checklists fail, the project was created. We can still redirect, but ideally handle it.
   }
 
+  revalidatePath('/projects');
+  revalidatePath('/');
+  revalidatePath('/domains');
   redirect('/projects');
 }

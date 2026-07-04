@@ -6,6 +6,7 @@ import { CircleProgress } from '@/components/CircleProgress';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Copy, CheckCircle2, DollarSign, Link as LinkIcon, MessageSquare, Trash2 } from 'lucide-react';
 import Link from 'next/link';
+import { deleteProject, revalidateProjects } from '@/app/actions';
 
 const STATUSES = ["Requirements", "Development", "Deployment", "Testing", "Review", "Completed"];
 const CATEGORY_ORDER = ["Requirements", "Development", "Deployment", "Testing"];
@@ -96,6 +97,8 @@ export function ProjectDetailView({
       setProject((prev: any) => ({ ...prev, status: autoStatus }));
       await supabase.from('projects').update({ status: autoStatus }).eq('id', project.id);
     }
+
+    revalidateProjects();
   };
 
   const handleUpdateField = async (field: string, value: any) => {
@@ -107,6 +110,8 @@ export function ProjectDetailView({
       .from('projects')
       .update({ [field]: value })
       .eq('id', project.id);
+
+    revalidateProjects();
   };
 
   const copyEmployeeLink = () => {
@@ -117,9 +122,9 @@ export function ProjectDetailView({
 
   const handleDelete = async () => {
     if (confirm("Are you sure you want to delete this project? This action cannot be undone.")) {
-      const { error } = await supabase.from('projects').delete().eq('id', project.id);
-      if (error) {
-        alert("Failed to delete project: " + error.message);
+      const result = await deleteProject(project.id);
+      if (result.error) {
+        alert("Failed to delete project: " + result.error);
       } else {
         router.push('/projects');
       }

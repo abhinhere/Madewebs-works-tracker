@@ -1,6 +1,8 @@
 import { supabase } from '@/lib/supabase';
 import { ProjectList } from '@/components/ProjectList';
 
+export const dynamic = 'force-dynamic';
+
 export default async function ProjectsPage() {
   const { data: projects, error: projectsError } = await supabase
     .from('projects')

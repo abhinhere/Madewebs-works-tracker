@@ -12,11 +12,19 @@ const MONTHLY_DATA = [
 ];
 
 export function DashboardCharts({ data }: { data: any[] }) {
+  const formatYAxis = (v: number) => {
+    const absVal = Math.abs(v);
+    if (absVal >= 10000000) return "₹" + (v / 10000000).toFixed(1) + "Cr";
+    if (absVal >= 100000) return "₹" + (v / 100000).toFixed(1) + "L";
+    if (absVal >= 1000) return "₹" + (v / 1000).toFixed(0) + "k";
+    return "₹" + v;
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
       <div className="bg-white border border-gray-200 rounded-[14px] p-5">
         <h3 className="text-[15px] font-bold text-gray-900 m-0 mb-4">Monthly Revenue</h3>
-        <div className="h-[220px] w-full">
+        <div className="h-[280px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={data}>
               <defs>
@@ -27,7 +35,7 @@ export function DashboardCharts({ data }: { data: any[] }) {
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
               <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} tickFormatter={v => "₹" + (v / 1000) + "k"} />
+              <YAxis tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} tickFormatter={formatYAxis} />
               <Tooltip formatter={(v: any) => "₹" + Number(v || 0).toLocaleString("en-IN")} contentStyle={{ borderRadius: 10, border: "1px solid #e5e7eb", fontSize: 13 }} />
               <Area type="monotone" dataKey="revenue" stroke="#078FCD" strokeWidth={2.5} fill="url(#revGrad)" />
             </AreaChart>
@@ -37,12 +45,12 @@ export function DashboardCharts({ data }: { data: any[] }) {
 
       <div className="bg-white border border-gray-200 rounded-[14px] p-5">
         <h3 className="text-[15px] font-bold text-gray-900 m-0 mb-4">Monthly Profit</h3>
-        <div className="h-[220px] w-full">
+        <div className="h-[280px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
               <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} tickFormatter={v => "₹" + (v / 1000) + "k"} />
+              <YAxis tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} tickFormatter={formatYAxis} />
               <Tooltip formatter={(v: any) => "₹" + Number(v || 0).toLocaleString("en-IN")} contentStyle={{ borderRadius: 10, border: "1px solid #e5e7eb", fontSize: 13 }} />
               <Bar dataKey="profit" fill="#22c55e" radius={[4, 4, 0, 0]} />
             </BarChart>

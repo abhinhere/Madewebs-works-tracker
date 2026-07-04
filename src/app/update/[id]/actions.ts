@@ -89,6 +89,9 @@ export async function submitEmployeeUpdate(projectId: string, prevState: any, fo
 
   revalidatePath(`/update/${projectId}`);
   revalidatePath(`/projects/${projectId}`);
+  revalidatePath('/projects');
+  revalidatePath('/');
+  revalidatePath('/domains');
   
   return { success: true };
 }

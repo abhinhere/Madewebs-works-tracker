@@ -2,6 +2,8 @@ import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import { Globe, Building2, Mail, Calendar, ExternalLink, Clock } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 function daysUntil(dateStr: string) {
   const diff = new Date(dateStr).getTime() - new Date().getTime();
   return Math.ceil(diff / (1000 * 60 * 60 * 24));

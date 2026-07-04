@@ -3,6 +3,8 @@ import { DashboardCharts } from '@/components/DashboardCharts';
 import { Folder, CheckCircle, CreditCard, TrendingDown, TrendingUp, Clock, Eye, RefreshCw, AlertTriangle, Globe } from 'lucide-react';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 function fmtCurrency(v: number) {
   return "₹" + Number(v || 0).toLocaleString("en-IN");
 }
@@ -14,15 +16,15 @@ function daysUntil(dateStr: string) {
 
 function StatCard({ label, value, icon: Icon, color, sub }: any) {
   return (
-    <div className="bg-white border border-gray-200 rounded-[14px] p-4 flex flex-col gap-1.5 shadow-sm">
-      <div className="flex items-center justify-between">
-        <span className="text-xs text-gray-500 font-medium tracking-wide uppercase">{label}</span>
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${color}15`, color }}>
+    <div className="bg-white border border-gray-200 rounded-[14px] p-4.5 flex flex-col gap-2 shadow-sm min-w-0">
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-[11px] text-gray-500 font-bold tracking-wide uppercase truncate" title={label}>{label}</span>
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: `${color}15`, color }}>
           <Icon className="w-4 h-4" />
         </div>
       </div>
-      <div className="text-2xl font-bold text-gray-900">{value}</div>
-      {sub && <div className="text-xs text-gray-400">{sub}</div>}
+      <div className="text-2xl font-black text-gray-900 truncate" title={value}>{value}</div>
+      {sub && <div className="text-[11px] text-gray-400 font-medium truncate" title={sub}>{sub}</div>}
     </div>
   );
 }
@@ -106,7 +108,7 @@ export default async function DashboardPage() {
       )}
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-4 mb-7">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-7">
         <StatCard label="Active Projects" value={activeProjects.length} icon={Folder} color="#078FCD" />
         <StatCard label="Completed" value={completedProjects.length} icon={CheckCircle} color="#22c55e" />
         <StatCard label="Revenue" value={fmtCurrency(revenue)} icon={CreditCard} color="#8b5cf6" />
